@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  s3:
+    image: minio/minio
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    networks:
+      - backend
+    volumes:
+      - s3-data:/data
+
+networks:
+  backend:
+    name: pse-backend
+    driver: bridge
+
+volumes:
+  s3-data:
