@@ -1,5 +1,8 @@
 version: '3.9'
 services:
+  livecam:
+    build: .
+
   s3:
     image: minio/minio
     command: server --console-address ":9001" /data
