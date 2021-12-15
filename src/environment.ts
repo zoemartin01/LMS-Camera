@@ -1,6 +1,7 @@
 const environment = {
     production: false,
     recording_path: './output',
+    port: 7000,
     s3: {
         host: 'localhost',
         port: 9000,
