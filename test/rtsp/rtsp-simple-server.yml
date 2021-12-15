@@ -1,0 +1,4 @@
+paths:
+  stream:
+    runOnInit: ffmpeg -re -stream_loop -1 -i /app/recording.mp4 -c:v libx264 -preset ultrafast -tune zerolatency -b:v 600k -f rtsp rtsp://localhost:$RTSP_PORT/$RTSP_PATH
+    runOnInitRestart: yes

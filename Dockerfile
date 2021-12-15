@@ -3,8 +3,8 @@ FROM node:lts-bullseye as build
 WORKDIR /app
 COPY ./ /app
 
-RUN apt-get update && apt-get install -y at
-RUN service atd start
+RUN apt-get update && apt-get install -y ffmpeg
+RUN mkdir /app/output
 
 RUN npm install
 

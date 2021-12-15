@@ -1,16 +1,21 @@
 const environment = {
     production: false,
-    apiUri: 'api/v1',
+    recording_path: './output',
     s3: {
-        endpoint: 'localhost',
+        host: 'localhost',
         port: 9000,
         accessKey: 'minio',
         secretKey: 'minio123',
         bucket: 'livecam',
     },
     livecam: {
-        endpoint: 'localhost',
-        framerate: '25',
+        host: 'rtsp://localhost:8554/stream',
+        framerate: 25,
+    },
+    backend: {
+        host: 'http://localhost:3000',
+        api: '/api/v1',
+        patchEndpoint: '/livecam/recordings/:id',
     }
 }
 

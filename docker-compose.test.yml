@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  livecam:
+    build: .
+    ports:
+      - "7000:7000"
+    networks:
+      - backend
+
+  s3:
+    image: minio/minio
+    command: server --console-address ":9001" /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    networks:
+      - backend
+    volumes:
+      - s3-data:/data
+
+  rtsp:
+    build: ./test/rtsp
+    environment:
+      - RTSP_PROTOCOLS=tcp
+    ports:
+      - "8554:8554"
+      - "1935:1935"
+      - "8888:8888"
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: pse-backend
+    driver: bridge
+
+volumes:
+  s3-data:

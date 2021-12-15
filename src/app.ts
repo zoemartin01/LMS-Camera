@@ -3,9 +3,13 @@ import environment from "./environment";
 import { BucketItem } from 'minio'
 import s3Client from "./s3";
 import scheduleRecording from "./scheduler";
+import bodyParser from "body-parser";
 
 const port = 7000;
 const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/recordings", async (_, res) => {
     const stream = s3Client.listObjects(environment.s3.bucket, '', true);
@@ -28,7 +32,7 @@ app.post("/recordings", async (req, res) => {
     const { id, start, end } = req.body;
 
     scheduleRecording(new Date(start), new Date(end), id);
-    res.status(200);
+    res.sendStatus(200);
 });
 
 app.listen(port, () => {

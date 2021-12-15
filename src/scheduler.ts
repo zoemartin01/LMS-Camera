@@ -1,31 +1,27 @@
 import * as schedule from 'node-schedule';
-import * as FFmpeg from '@unaxiom/ffmpeg';
 import environment from './environment';
 import upload from './upload';
+import ffmpeg from 'fluent-ffmpeg';
 
 
-const scheduleRecording = (start: Date, end: Date, id: string) => {
-  const duration = end.getTime() - start.getTime();
-  const ffmpeg = new FFmpeg.FFmpeg();
 
-  ffmpeg.addOptions([
-    '-i', environment.livecam.endpoint,
-    '-vcodec', 'copy',
-    '-r', environment.livecam.framerate,
-    '-t', `${duration}ms`,
-  ]);
+const scheduleRecording = async (start: Date, end: Date, id: string) => {
+  const duration = end.getTime() - start.getTime();  
+  const record = ffmpeg(environment.livecam.host)
+    .videoCodec('copy')
+    //.videoBitrate('1000k')
+    .fps(environment.livecam.framerate)
+    .duration(`${duration}ms`)
+    .output(`${environment.recording_path}/${id}.mp4`)
+    .on('end', () => {
+      upload(id);
+    })
+    .on('error', (_err, _stdout, _stderr) => {
+      upload(id);
+    });
 
-  ffmpeg.setOutputFile(`/output/${id}.mp4`);
-  ffmpeg.setOnCloseCallback(() => {
-    schedule.scheduleJob(
-      new Date(start.getTime() + 1.8e+6),
-      () => upload(id)
-    )
-  });
-
-
-  schedule.scheduleJob(start, function(){
-    ffmpeg.run();
+  schedule.scheduleJob(start, async () => {
+    record.run();
   });
 };
 
