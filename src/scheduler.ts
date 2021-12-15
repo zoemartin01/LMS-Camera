@@ -1,28 +1,32 @@
-import { exec } from 'child_process';
+import * as schedule from 'node-schedule';
+import * as FFmpeg from '@unaxiom/ffmpeg';
+import environment from './environment';
+import upload from './upload';
 
-export class Scheduler {
-  start: Date;
-  end: Date;
+
+const scheduleRecording = (start: Date, end: Date, id: string) => {
+  const duration = end.getTime() - start.getTime();
+  const ffmpeg = new FFmpeg.FFmpeg();
+
+  ffmpeg.addOptions([
+    '-i', environment.livecam.endpoint,
+    '-vcodec', 'copy',
+    '-r', environment.livecam.framerate,
+    '-t', `${duration}ms`,
+  ]);
+
+  ffmpeg.setOutputFile(`/output/${id}.mp4`);
+  ffmpeg.setOnCloseCallback(() => {
+    schedule.scheduleJob(
+      new Date(start.getTime() + 1.8e+6),
+      () => upload(id)
+    )
+  });
 
 
-  constructor(start: Date, end: Date) {
-    this.start = start;
-    this.end = end;
-  }
+  schedule.scheduleJob(start, function(){
+    ffmpeg.run();
+  });
+};
 
-  async schedule() {
-    const date = `${this.start.getHours()}:${this.start.getMinutes()} ${this.start.getFullYear()}-${this.start.getMonth()}-${this.start.getDate()}`;
-
-    exec(`at ${date} -f ./record.sh`, (err, stdout, stderr) => {
-      if (err) {
-        console.error(err);
-      }
-    
-      // the *entire* stdout and stderr (buffered)
-      console.log(`stdout: ${stdout}`);
-      console.log(`stderr: ${stderr}`);
-    });
-  }
-}
-
-new Scheduler(new Date(), new Date()).schedule();
+export default scheduleRecording;

@@ -8,6 +8,10 @@ const environment = {
         secretKey: 'minio123',
         bucket: 'livecam',
     },
+    livecam: {
+        endpoint: 'localhost',
+        framerate: '25',
+    }
 }
 
 export default environment;
