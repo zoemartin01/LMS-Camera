@@ -1,7 +1,7 @@
 import express from "express";
 import { BucketItem } from "minio";
 import environment from "./environment";
-import { Recording } from "./recording";
+import { ScheduledRecording } from "./scheduled-recording";
 import { Response, Request } from "express";
 import { s3Client } from "./s3-client";
 
@@ -63,7 +63,7 @@ export class Router {
      */
     static async scheduleRecording(req: Request, res: Response) {
         const { id, start, end } = req.body;
-        const recording = new Recording(id, new Date(start), new Date(end), req.body.bitrate, req.body.resolution);
+        const recording = new ScheduledRecording(id, new Date(start), new Date(end), req.body.bitrate, req.body.resolution);
         recording.schedule();
         res.sendStatus(200);
     }

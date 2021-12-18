@@ -8,7 +8,7 @@ import { s3Client } from './s3-client';
 /**
  * A scheduled recording
  */
-export class Recording {
+export class ScheduledRecording {
   id: string;
   start: Date;
   end: Date;
