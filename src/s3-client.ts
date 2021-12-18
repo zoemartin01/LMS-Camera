@@ -9,8 +9,13 @@ const options = {
   useSSL: false
 }
 
+/**
+ * The S3 client
+ */
 export class S3Client extends Client {
   constructor() {
     super(options);
   }
 }
+
+export const s3Client = new S3Client();

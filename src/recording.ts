@@ -3,10 +3,11 @@ import environment from './environment';
 import ffmpeg from 'fluent-ffmpeg';
 import axios from 'axios';
 import fs from 'fs';
-import { S3Client } from './s3-client';
+import { s3Client } from './s3-client';
 
-const s3Client = new S3Client();
-
+/**
+ * A scheduled recording
+ */
 export class Recording {
   id: string;
   start: Date;
@@ -14,6 +15,7 @@ export class Recording {
   bitrate: number;
   resolution: string;
   duration: number;
+
 
   constructor(id: string, start: Date, end: Date, bitrate: number, resolution: string) {
     this.id = id;
@@ -24,6 +26,9 @@ export class Recording {
     this.duration = end.getTime() - start.getTime();  
   }
 
+  /**
+   * Schedules the recording
+   */
   schedule() {
     const job = ffmpeg(environment.livecam.host)
     .videoCodec('copy')
@@ -45,6 +50,9 @@ export class Recording {
     });
   }
 
+  /**
+   * Uploads the recording to S3
+   */
   upload() {
     const path = `${environment.recording_path}/${this.id}.mp4`;
     const stream = fs.createReadStream(path);

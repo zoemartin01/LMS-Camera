@@ -2,6 +2,10 @@ import Express from 'express';
 import bodyParser from "body-parser";
 import { Router } from "./router";
 import environment from "./environment";
+
+/**
+ * The application with web server
+ */
 export class App {
     express = Express();
     router = new Router();
@@ -16,6 +20,9 @@ export class App {
         this.express.use("/api", this.router.router);
     }
 
+    /**
+     * Starts the application
+     */
     start() {
         this.express.listen(this.port, () => {
             console.log(`listening on port ${this.port}`);
