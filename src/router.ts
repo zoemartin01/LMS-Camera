@@ -62,6 +62,7 @@ export class Router {
      * @param res server response
      */
     static async scheduleRecording(req: Request, res: Response) {
+        // TODO: fix body params
         const { id, start, end } = req.body;
         const recording = new ScheduledRecording(id, new Date(start), new Date(end), req.body.bitrate, req.body.resolution);
         recording.schedule();

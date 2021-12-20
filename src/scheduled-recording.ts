@@ -4,6 +4,7 @@ import ffmpeg from 'fluent-ffmpeg';
 import axios from 'axios';
 import fs from 'fs';
 import { s3Client } from './s3-client';
+import { Recorder } from './recorder';
 
 /**
  * A scheduled recording
@@ -30,24 +31,8 @@ export class ScheduledRecording {
    * Schedules the recording
    */
   schedule() {
-    const job = ffmpeg(environment.livecam.host)
-    .videoCodec('copy')
-    //.videoBitrate(this.bitrate)
-    //.size(this.resolution)
-    //.autopad()
-    .fps(environment.livecam.framerate)
-    .duration(`${this.duration}ms`)
-    .output(`${environment.recording_path}/${this.id}.mp4`)
-    .on('end', () => {
-      this.upload();
-    })
-    .on('error', (_err, _stdout, _stderr) => {
-      this.upload();
-    })
-
-    schedule.scheduleJob(this.start, () => {
-      job.run();
-    });
+    const recorder = new Recorder(this);
+    recorder.schedule();
   }
 
   /**
