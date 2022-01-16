@@ -1,6 +1,4 @@
-import * as schedule from 'node-schedule';
 import environment from './environment';
-import ffmpeg from 'fluent-ffmpeg';
 import axios from 'axios';
 import fs from 'fs';
 import { s3Client } from './s3-client';
