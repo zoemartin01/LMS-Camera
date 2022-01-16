@@ -53,6 +53,8 @@ export class Router {
           return;
         }
 
+        res.status(200);
+
         stream.pipe(res);
       }
     );
