@@ -2,6 +2,10 @@ version: '3.9'
 services:
   livecam:
     build: .
+    ports:
+      - "7000:7000"
+    networks:
+      - backend
 
   s3:
     image: minio/minio
