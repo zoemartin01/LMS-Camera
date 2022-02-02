@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Express from 'express';
 import bodyParser from "body-parser";
 import { Router } from "./router";
@@ -13,15 +14,17 @@ export class App {
     express = Express();
     router = new Router();
     port = environment.port;
-    stream = new Stream({
+    streamOptions = {
         name: 'name',
         streamUrl: environment.livecam.host,
         wsPort: 9999,
         ffmpegOptions: { 
-          '-stats': '',
-          '-r': 30
+            '-hide_banner': '',
+            '-loglevel': 'error',
+            '-r': 30,
         }
-      });
+      }
+    stream = new Stream(this.streamOptions);
 
     constructor() {
         this.express.use(bodyParser.json());
@@ -30,6 +33,16 @@ export class App {
         this.router.initializeRoutes();
 
         this.express.use("/api/livecam/v1", this.router.router);
+
+        this.stream.mpeg1Muxer.on('exitWithError', async (_data: string) => {
+            this.stream.stop();
+
+            await new Promise((resolve) => {
+                setTimeout(resolve, 5000);
+            });
+
+            this.initStream();
+        })
     }
 
     /**
@@ -39,6 +52,20 @@ export class App {
         this.express.listen(this.port, () => {
             console.log(`listening on port ${this.port}`);
         });
+    }
+
+    initStream() {
+        this.stream = new Stream(this.streamOptions);
+
+        this.stream.mpeg1Muxer.on('exitWithError', async (_data: string) => {
+            this.stream.stop();
+
+            await new Promise((resolve) => {
+                setTimeout(resolve, 5000);
+              });
+
+            this.initStream();
+        })
     }
 }
 
