@@ -15,6 +15,7 @@ export class Router {
     this.router.get('/recordings', Router.listFiles);
     this.router.get('/recordings/:id', Router.getFile);
     this.router.post('/recordings', Router.scheduleRecording);
+    this.router.get('/livefeed', Router.getLiveFeed);
   }
 
   /**
@@ -73,16 +74,26 @@ export class Router {
    * @param res server response
    */
   static async scheduleRecording(req: Request, res: Response) {
-    // TODO: fix body params
     const { id, start, end, bitrate, resolution } = req.body;
     const recording = new ScheduledRecording(
       id,
-      new Date(start),
-      new Date(end),
+      new Date(Date.parse(start)),
+      new Date(Date.parse(end)),
       bitrate,
       resolution
     );
     recording.schedule();
-    res.sendStatus(200);
+    res.sendStatus(201);
+  }
+  
+  /**
+   * Returns the cameras livestream feed as a webm stream
+   * 
+   * @route {GET} /livefeed
+   * @param req backend request to get the livestream feed
+   * @param res server response to send the livestream feed
+   */
+  static async getLiveFeed(req: Request, res: Response) {
+    res.status(200);
   }
 }
