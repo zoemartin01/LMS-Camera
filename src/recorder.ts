@@ -17,7 +17,7 @@ export class Recorder {
     //.size(this.resolution)
     //.autopad()
     // TODO: fix bad sectors
-    .fps(environment.livecam.framerate)
+    .fps(+environment.livecam.framerate || 25)
     .duration(`${this.scheduledRecording.duration}ms`)
     .output(`${environment.recording_path}/${this.scheduledRecording.id}.mp4`)
     .on('end', () => {

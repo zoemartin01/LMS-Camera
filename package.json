@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node ./src/app.ts",
     "prettier": "prettier --write src/**/*.{ts,js,css,html}",
-    "prepare": "husky install"
+    "prepare:dev": "husky install"
   },
   "repository": {
     "type": "git",
