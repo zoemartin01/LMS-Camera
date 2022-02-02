@@ -29,7 +29,7 @@ export class App {
 
         this.router.initializeRoutes();
 
-        this.express.use("/api", this.router.router);
+        this.express.use("/api/livecam/v1", this.router.router);
     }
 
     /**
