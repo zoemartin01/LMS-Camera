@@ -22,6 +22,7 @@ export class App {
             '-hide_banner': '',
             '-loglevel': 'error',
             '-r': 30,
+            '-max_muxing_queue_size': 9999,
         }
       }
     stream = new Stream(this.streamOptions);
