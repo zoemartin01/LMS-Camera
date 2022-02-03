@@ -15,6 +15,10 @@ const options = {
 export class S3Client extends Client {
   constructor() {
     super(options);
+
+    this.bucketExists(environment.s3.bucket).then(async exists => {
+      if (!exists) await this.makeBucket(environment.s3.bucket, '');
+    });
   }
 }
 
