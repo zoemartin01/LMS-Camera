@@ -76,7 +76,7 @@ export class App {
 
       try {
         res = await axios.get(
-          `${environment.backend.host}/api/v1/recording-schedules`
+          `${environment.backend.host}${environment.backend.api}${environment.backend.getSchedulesEndpoint}`
         );
       } catch (error) {
         console.log(error);

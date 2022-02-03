@@ -17,6 +17,7 @@ const environment = {
         host: process.env.BACKEND_HOST || 'http://localhost:3000',
         api: process.env.BACKEND_PATH || '/api/v1',
         patchEndpoint: '/livecam/recordings/:id',
+        getSchedulesEndpoint: '/livecam/recordings/schedules',
     }
 }
 
