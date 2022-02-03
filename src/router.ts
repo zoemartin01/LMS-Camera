@@ -14,8 +14,8 @@ export class Router {
   initializeRoutes() {
     this.router.get('/recordings', Router.listFiles);
     this.router.get('/recordings/:id', Router.getFile);
+    this.router.delete('/recordings/:id', Router.deleteFile);
     this.router.post('/recordings', Router.scheduleRecording);
-    this.router.get('/livefeed', Router.getLiveFeed);
   }
 
   /**
@@ -87,13 +87,25 @@ export class Router {
   }
   
   /**
-   * Returns the cameras livestream feed as a webm stream
+   * Deletes a recording file
    * 
-   * @route {GET} /livefeed
-   * @param req backend request to get the livestream feed
-   * @param res server response to send the livestream feed
+   * @route {DELETE} /recordings/:id
+   * @routeParam {string} id - the id of the recording
+   * @param req backend request to delete a recording file
+   * @param res server response
    */
-  static async getLiveFeed(req: Request, res: Response) {
-    res.status(200);
+  static async deleteFile(req: Request, res: Response) {
+    s3Client.removeObject(
+      environment.s3.bucket,
+      `${req.params.id}.mp4`,
+      (err) => {
+        if (err) {
+          res.sendStatus(404);
+          return;
+        }
+
+        res.sendStatus(204);
+      }
+    );
   }
 }
