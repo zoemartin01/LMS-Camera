@@ -1,6 +1,7 @@
 const environment = {
     recording_path: './output',
     port: 7000,
+    apiKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlrZXkiOiJaalZsT1RrMVlqRXROakl3T1MwME1ETTRMV0ZpTlRjdFpUSTFZMlEzTVdJd05qWm0ifQ.wiAd8rTGq1xh4rYirxBPm9BwhKQK-xKN7261NFWWMFE',
     s3: {
         host: process.env.S3_HOST || 'localhost',
         port: process.env.S3_PORT || 9000,

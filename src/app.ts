@@ -45,6 +45,8 @@ export class App {
 
     this.express.use('/api/livecam/v1', this.router.router);
 
+    axios.defaults.headers.common['Authorization'] = `Bearer ${environment.apiKey}`;
+
     this.initStream();
     this.initRecordingSchedules();
   }
@@ -80,12 +82,12 @@ export class App {
         );
       } catch (error) {
         console.log(error);
-        sleep(5000);
+        await sleep(5000);
         continue;
       }
 
       if (res.status !== 200) {
-        sleep(5000);
+        await sleep(5000);
         continue;
       }
 
