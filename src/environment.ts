@@ -9,9 +9,9 @@ const environment = {
         bucket: 'livecam',
     },
     livecam: {
-        host: process.env.RTSP_URL || 'rtsp://localhost:8554/stream',
-        framerate: process.env.RTSP_FPS || 25,
-        bitrate: process.env.RTSP_BITRATE || '500k',
+        host: process.env.RTSP_URL || 'rtsp://admin:psege2022@192.168.0.184:554//h265Preview_01_main',
+        framerate: process.env.RTSP_FPS || 0,
+        bitrate: process.env.RTSP_BITRATE || '8192',
     },
     backend: {
         host: process.env.BACKEND_HOST || 'http://localhost:3000',

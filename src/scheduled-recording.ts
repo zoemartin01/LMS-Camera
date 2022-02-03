@@ -3,6 +3,7 @@ import axios from 'axios';
 import fs from 'fs';
 import { s3Client } from './s3-client';
 import { Recorder } from './recorder';
+import path from 'path';
 
 /**
  * A scheduled recording
@@ -37,14 +38,14 @@ export class ScheduledRecording {
    * Uploads the recording to S3
    */
   upload() {
-    const path = `${environment.recording_path}/${this.id}.mp4`;
-    const stream = fs.createReadStream(path);
+    const filePath = path.resolve(`${environment.recording_path}/${this.id}.mp4`);
+    const stream = fs.createReadStream(filePath);
 
-    fs.stat(path, (err, stats) => {
+    fs.stat(filePath, (err, stats) => {
       if (err) return
       s3Client.putObject(environment.s3.bucket, `${this.id}.mp4`, stream, stats.size, function(err, _) {
         if (err) return
-        fs.unlinkSync(path);
+        fs.unlinkSync(filePath);
       })
       axios.patch(
         `${environment.backend.host}${environment.backend.api}${environment.backend.patchEndpoint.replace(':id', this.id)}`,
