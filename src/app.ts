@@ -91,7 +91,7 @@ export class App {
         continue;
       }
 
-      const recordingSchedules = res.data;
+      const recordingSchedules = res.data.data;
 
       for (const recordingSchedule of recordingSchedules) {
         const { id, start, end, bitrate, resolution } = recordingSchedule;
