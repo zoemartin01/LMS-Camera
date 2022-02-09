@@ -11,6 +11,9 @@ import { s3Client } from './s3-client';
 export class Router {
   router = express.Router();
 
+  /**
+   * Initializes the routes
+   */
   initializeRoutes() {
     this.router.get('/recordings', Router.listFiles);
     this.router.get('/recordings/:id', Router.getFile);

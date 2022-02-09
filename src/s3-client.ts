@@ -13,6 +13,9 @@ const options = {
  * The S3 client
  */
 export class S3Client extends Client {
+  /**
+   * Initializes the S3 client
+   */
   constructor() {
     super(options);
 

@@ -37,6 +37,9 @@ export class App {
   };
   stream: typeof Stream;
 
+  /**
+   * Initializes the application
+   */
   constructor() {
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
@@ -60,6 +63,10 @@ export class App {
     });
   }
 
+
+  /**
+   * Initializes the stream
+   */
   initStream() {
     this.stream = new Stream(this.streamOptions);
 
@@ -70,6 +77,9 @@ export class App {
     });
   }
 
+  /**
+   * Fetches the recording schedules from the backend and reschedules them here
+   */
   async initRecordingSchedules() {
     let done = false;
 

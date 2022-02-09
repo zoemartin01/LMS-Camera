@@ -16,7 +16,14 @@ export class ScheduledRecording {
   resolution: string;
   duration: number;
 
-
+  /**
+   * Constructor
+   * @param id the id of the recording
+   * @param start the start time of the recording
+   * @param end the end time of the recording
+   * @param bitrate the bitrate of the recording in bytes
+   * @param resolution the resolution of the recording (e.g. 1920x1080)
+   */
   constructor(id: string, start: Date, end: Date, bitrate: number, resolution: string) {
     this.id = id;
     this.start = start;

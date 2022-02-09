@@ -4,13 +4,22 @@ import { ScheduledRecording } from './scheduled-recording';
 import * as schedule from 'node-schedule';
 import path from 'path';
 
+/**
+ * The recorder class is responsible for recording the stream
+ */
 export class Recorder {
   scheduledRecording: ScheduledRecording;
 
+  /**
+   * Constructor
+   */
   constructor(scheduledRecording: ScheduledRecording) {
     this.scheduledRecording = scheduledRecording;
   }
 
+  /**
+   * Starts the recording
+   */
   run() {
     const filePath = path.resolve(`${environment.recording_path}/${this.scheduledRecording.id}.mp4`);
 
@@ -31,8 +40,11 @@ export class Recorder {
       this.scheduledRecording.upload();
     })
     .save(filePath);
-}
+  }
 
+  /**
+   * Schedule the recording job
+   */
   schedule() {
     schedule.scheduleJob(this.scheduledRecording.start, () => {
       this.run();
